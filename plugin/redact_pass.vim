@@ -34,7 +34,9 @@ function! s:RedactPass()
   " Unset options
   setlocal nobackup
   setlocal noswapfile
-  setlocal viminfo=
+  if has('viminfo')
+    setlocal viminfo=
+  endif
   if has('persistent_undo')
     setlocal noundofile
   endif
