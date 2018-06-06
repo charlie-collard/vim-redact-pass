@@ -1,0 +1,39 @@
+*redact_pass.txt*	For Vim version 6.0	Last change: 2018 June 6
+
+DESCRIPTION					*redact_pass*
+
+This plugin switches off the 'viminfo', 'backup', 'swapfile', and 'undofile'
+options locally for the buffer when editing passwords in the `pass(1)`
+password manager, or a comparable tool if `g:redact_pass_pattern` is set
+beforehand.
+
+This is to prevent anyone being able to extract passwords from your Vim cache
+files in the event of a compromise.
+
+Test this carefully to make sure it works! If it doesn't, it is probably
+because you need to set `g:redact_pass_pattern` to fit your system's
+behaviour, or the plugin hasn't loaded at all.
+
+REQUIREMENTS					*redact_pass-requirements*
+
+This plugin is only available if 'compatible' is not set. It also requires the
+|+autocmd| feature.
+
+OPTIONS						*redact_pass-options*
+
+There is one options you can set in your |vimrc| before loading the plugin:
+
+						*g:redact_pass_backup*
+Set `g:redact_pass_pattern` to specify the path pattern for which the options
+should be disabled. This defaults to a value based on the source code of
+`pass(1)`.
+
+AUTHOR						*redact_pass-author*
+
+Written and maintained by Tom Ryder <tom@sanctum.geek.nz>.
+
+LICENSE						*redact_pass-license*
+
+Licensed for distribution under the same terms as Vim itself (see |license|).
+
+ vim:tw=78:ts=8:ft=help:norl:
