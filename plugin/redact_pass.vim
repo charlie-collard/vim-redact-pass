@@ -33,6 +33,7 @@ function! s:RedactPass()
 
   " Unset options
   setlocal nobackup
+  setlocal nowritebackup
   setlocal noswapfile
   if has('viminfo')
     setlocal viminfo=
