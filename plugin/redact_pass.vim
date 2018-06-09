@@ -24,9 +24,23 @@ let s:pattern = '\m\C/pass\.[^/]\+/[^/]\+\.txt$'
 " file in the argument list is within the named dir, and that the whole path
 " matches the above pattern immediately after that dir name
 function! s:PassPath(root)
-  return strlen(a:root)
-        \ && stridx(argv(0), a:root) == 0
-        \ && strlen(a:root) == match(argv(0), s:pattern)
+
+  " Check we actually got a value, i.e. this wasn't an empty environment
+  " variable
+  if !strlen(a:root)
+    return 0
+  endif
+
+  " Full resolved path to the root dir with no trailing slashes
+  let l:root = fnamemodify(a:root, ':p:h')
+
+  " Full resolved path to the first file in the arg list
+  let l:path = fnamemodify(argv(0), ':p')
+
+  " Check the string all match and at the expected points
+  return stridx(l:path, l:root) == 0
+        \ && strlen(l:root) == match(l:path, s:pattern)
+
 endfunction
 
 " Check whether we should set redacting options or not
