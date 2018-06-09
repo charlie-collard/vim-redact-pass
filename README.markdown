@@ -1,17 +1,16 @@
 redact\_pass.vim
 ================
 
-This plugin switches off the` 'viminfo'`, `'backup'`, `'swapfile'`, and
-`'undofile'` options locally for the buffer when editing passwords in the
-`pass(1)` password manager, or a comparable tool if `g:redact_pass_pattern` is
-set beforehand.
+This plugin switches off the 'viminfo', 'backup', 'writebackup', 'swapfile',
+and 'undofile' options globally when editing a password in `pass(1)`.
 
 This is to prevent anyone being able to extract passwords from your Vim cache
 files in the event of a compromise.
 
-Test this carefully to make sure it works! If it doesn't, it is probably
-because you need to set `g:redact_pass_pattern` to fit your system's behaviour,
-or the plugin hasn't loaded at all.
+You should test this after installed to ensure you see this message is printed
+whenever you `pass edit`:
+
+> Editing password file--disabled leaky options!
 
 License
 -------

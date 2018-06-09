@@ -1,32 +1,34 @@
-*redact_pass.txt*	For Vim version 6.0	Last change: 2018 June 6
+*redact_pass.txt*	For Vim version 6.0	Last change: 2018 June 10
 
 DESCRIPTION					*redact_pass*
 
-This plugin switches off the 'viminfo', 'backup', 'swapfile', and 'undofile'
-options locally for the buffer when editing passwords in the `pass(1)`
-password manager, or a comparable tool if `g:redact_pass_pattern` is set
-beforehand.
+This plugin switches off the 'viminfo', 'backup', 'writebackup', 'swapfile',
+and 'undofile' options globally when editing a password in `pass(1)`.
 
 This is to prevent anyone being able to extract passwords from your Vim cache
 files in the event of a compromise.
 
-Test this carefully to make sure it works! If it doesn't, it is probably
-because you need to set `g:redact_pass_pattern` to fit your system's
-behaviour, or the plugin hasn't loaded at all.
+You should test this after installed to ensure you see this message is printed
+whenever you `pass edit`:
+
+> Editing password file--disabled leaky options!
 
 REQUIREMENTS					*redact_pass-requirements*
 
 This plugin is only available if 'compatible' is not set. It also requires the
 |+autocmd| feature.
 
-OPTIONS						*redact_pass-options*
+IMPLEMENTATION					*redact_pass-implementation*
 
-There is one options you can set in your |vimrc| before loading the plugin:
+The options are disabled globally rather than attempting to set them local to
+the buffer only, which was the flawed approach of previous versions. This is
+mostly because of the 'viminfo' option; it's global, and there's no meaningful
+way to exclude information from the sensitive buffer from appearing in it.
 
-						*g:redact_pass_backup*
-Set `g:redact_pass_pattern` to specify the path pattern for which the options
-should be disabled. This defaults to a value based on the source code of
-`pass(1)`.
+Because the typical use case for editing a password file in Vim is that you
+load and change a single short document, and then quit, it's more sensible to
+just turn the relevant options off completely, and makes what the plugin is
+doing more reliable and straightforward to understand.
 
 AUTHOR						*redact_pass-author*
 

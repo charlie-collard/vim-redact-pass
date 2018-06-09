@@ -1,14 +1,9 @@
 "
-" redact_pass.vim: Switch off the 'viminfo', 'backup', 'swapfile', and
-" 'undofile' when editing passwords in the pass(1) password manager, or a
-" comparable tool if g:redact_pass_pattern is set beforehand.
+" redact_pass.vim: Switch off the 'viminfo', 'backup', 'writebackup',
+" 'swapfile', and 'undofile' globally when editing a password in pass(1).
 "
 " This is to prevent anyone being able to extract passwords from your Vim
 " cache files in the event of a compromise.
-"
-" Test this carefully to make sure it works! If it doesn't, it is probably
-" because you need to set g:redact_pass_pattern to fit your system's
-" behaviour, or the plugin hasn't loaded at all.
 "
 " Author: Tom Ryder <tom@sanctum.geek.nz>
 " License: Same as Vim itself
@@ -21,37 +16,51 @@ if !has('autocmd')
 endif
 let g:loaded_redact_pass = 1
 
-" Set g:redact_pass_pattern to a default based on the pass(1) code, if it
-" hasn't already been set
-if !exists('g:redact_pass_pattern')
-  let g:redact_pass_pattern
-        \ = '/dev/shm/pass.*/*,$TMPDIR/pass.*/*,/tmp/pass.*/*'
-endif
+" Pattern to match for the portion of the path after the temporary dir,
+" starting with the leading slash
+let s:pattern = '\m\C/pass\.[^/]\+/[^/]\+\.txt$'
 
-" Function to switch the options off for just the current buffer
-function! s:RedactPass()
+" Check whether the given dir name is not an empty string, whether the first
+" file in the argument list is within the named dir, and that the whole path
+" matches the above pattern immediately after that dir name
+function! s:PassPath(root)
+  return strlen(a:root)
+        \ && stridx(argv(0), a:root) == 0
+        \ && strlen(a:root) == match(argv(0), s:pattern)
+endfunction
 
-  " Unset options
-  setlocal nobackup
-  setlocal nowritebackup
-  setlocal noswapfile
-  if has('viminfo')
-    setlocal viminfo=
+" Check whether we should set redacting options or not
+function! s:CheckArgsRedact()
+
+  " Short-circuit unless we're editing just one file and it looks like a path
+  " in one of the three expected directories; we're trying hard to make sure
+  " this really is a password file and we're not messing with the user's
+  " precious settings unnecessarily
+  if argc() != 1
+        \ || !s:PassPath('/dev/shm')
+        \ && !s:PassPath($TMPDIR)
+        \ && !s:PassPath('/tmp')
+    return
   endif
+
+  " Disable all the leaky options globally
+  set nobackup
+  set nowritebackup
+  set noswapfile
+  set viminfo=
   if has('persistent_undo')
-    setlocal noundofile
+    set noundofile
   endif
 
-  " Set a buffer variable to say we were here, for debugging
-  let b:redact_pass_active = 1
+  " Tell the user what we're doing so they know this worked, via a message and
+  " a global variable they can check
+  echomsg 'Editing password file--disabled leaky options!'
+  let g:redact_pass_redacted = 1
 
 endfunction
 
-" Automatic command to use the function based on filename pattern
-let s:command = 'autocmd BufNewFile,BufReadPre '
-      \ . g:redact_pass_pattern
-      \ . ' call s:RedactPass()'
+" Auto function loads only when Vim starts up
 augroup redact_pass
   autocmd!
-  execute s:command
+  autocmd VimEnter * call s:CheckArgsRedact()
 augroup END
