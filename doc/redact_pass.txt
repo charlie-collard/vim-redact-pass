@@ -1,4 +1,4 @@
-*redact_pass.txt*	For Vim version 6.0	Last change: 2018 June 10
+*redact_pass.txt*	For Vim version 6.0	Last change: 2018 June 17
 
 DESCRIPTION					*redact_pass*
 
