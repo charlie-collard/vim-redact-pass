@@ -11,7 +11,7 @@
 if exists('g:loaded_redact_pass') || &compatible
   finish
 endif
-if !has('autocmd')
+if !has('autocmd') || v:version < 600
   finish
 endif
 let g:loaded_redact_pass = 1
