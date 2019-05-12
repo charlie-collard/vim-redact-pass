@@ -15,13 +15,13 @@ printed whenever you `pass edit`:
 
 REQUIREMENTS					*redact_pass-requirements*
 
-This plugin is only available if 'compatible' is not set. It also requires the
-|+autocmd| feature.
+This plugin is only available if 'compatible' is not set.  It also requires
+the |+autocmd| feature.
 
 IMPLEMENTATION					*redact_pass-implementation*
 
 The options are disabled globally rather than attempting to set them local to
-the buffer only, which was the flawed approach of previous versions. This is
+the buffer only, which was the flawed approach of previous versions.  This is
 mostly because of the 'viminfo' option; it's global, and there's no meaningful
 way to exclude information from the sensitive buffer from appearing in it.
 
