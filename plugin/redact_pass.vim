@@ -8,13 +8,13 @@
 " Author: Tom Ryder <tom@sanctum.geek.nz>
 " License: Same as Vim itself
 "
-if exists('g:loaded_redact_pass') || &compatible
+if exists('loaded_redact_pass') || &compatible
   finish
 endif
 if !has('autocmd') || v:version < 600
   finish
 endif
-let g:loaded_redact_pass = 1
+let loaded_redact_pass = 1
 
 " Check whether we should set redacting options or not
 function! s:CheckArgsRedact()
