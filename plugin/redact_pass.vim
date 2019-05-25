@@ -8,37 +8,10 @@
 " Author: Tom Ryder <tom@sanctum.geek.nz>
 " License: Same as Vim itself
 "
-if exists('loaded_redact_pass') || &compatible
-  finish
-endif
-if !has('autocmd') || v:version < 600
+if exists('loaded_redact_pass') || &compatible  || v:version < 700
   finish
 endif
 let loaded_redact_pass = 1
-
-" Check whether we should set redacting options or not
-function! s:CheckArgsRedact()
-
-  " Ensure there's one argument and it's the matched file
-  if argc() != 1 || fnamemodify(argv(0), ':p') !=# expand('<afile>:p')
-    return
-  endif
-
-  " Disable all the leaky options globally
-  set nobackup
-  set nowritebackup
-  set noswapfile
-  set viminfo=
-  if has('persistent_undo')
-    set noundofile
-  endif
-
-  " Tell the user what we're doing so they know this worked, via a message and
-  " a global variable they can check
-  echomsg 'Editing password file--disabled leaky options!'
-  let g:redact_pass_redacted = 1
-
-endfunction
 
 " Auto function loads only when Vim starts up
 augroup redact_pass
@@ -47,5 +20,5 @@ augroup redact_pass
         \ /dev/shm/pass.?*/?*.txt
         \,$TMPDIR/pass.?*/?*.txt
         \,/tmp/pass.?*/?*.txt
-        \ call s:CheckArgsRedact()
+        \ call redact_pass#CheckArgsRedact()
 augroup END
