@@ -8,10 +8,7 @@
 " Author: Tom Ryder <tom@sanctum.geek.nz>
 " License: Same as Vim itself
 "
-if exists('loaded_redact_pass') || &compatible
-  finish
-endif
-if v:version < 700
+if exists('loaded_redact_pass') || &compatible  || v:version < 700
   finish
 endif
 let loaded_redact_pass = 1
