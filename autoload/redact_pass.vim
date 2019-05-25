@@ -2,7 +2,8 @@
 function! redact_pass#CheckArgsRedact() abort
 
   " Ensure there's one argument and it's the matched file
-  if argc() != 1 || fnamemodify(argv(0), ':p') !=# expand('<afile>:p')
+  if argc() != 1
+        \ || fnamemodify(argv(0), ':p') !=# expand('<afile>:p')
     return
   endif
 
