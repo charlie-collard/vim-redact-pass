@@ -20,5 +20,5 @@ augroup redact_pass
         \ /dev/shm/pass.?*/?*.txt
         \,$TMPDIR/pass.?*/?*.txt
         \,/tmp/pass.?*/?*.txt
-        \ call redact_pass#CheckArgsRedact()
+        \ call redact_pass#()
 augroup END
