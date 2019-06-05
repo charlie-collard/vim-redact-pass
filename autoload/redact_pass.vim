@@ -1,5 +1,5 @@
 " Check whether we should set redacting options or not
-function! redact_pass#CheckArgsRedact() abort
+function! redact_pass#() abort
 
   " Ensure there's one argument and it's the matched file
   if argc() != 1
