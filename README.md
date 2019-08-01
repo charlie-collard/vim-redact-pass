@@ -8,8 +8,8 @@ This plugin switches off the `'viminfo'`, `'backup'`, `'writebackup'`,
 This is to prevent anyone being able to extract passwords from your Vim cache
 files in the event of a compromise.
 
-You should test this after installed to ensure you see this message is printed
-whenever you `pass edit`:
+You should test this after installation to ensure you see this message is
+printed whenever you `pass edit`:
 
 > Editing password file--disabled leaky options!
 
