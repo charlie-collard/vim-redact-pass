@@ -18,6 +18,7 @@ function! redact_pass#() abort
 
   " Tell the user what we're doing so they know this worked, via a message and
   " a global variable they can check
+  redraw
   echomsg 'Editing password file--disabled leaky options!'
   let g:redact_pass_redacted = 1
 
